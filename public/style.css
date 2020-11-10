@@ -4,3 +4,14 @@ html{
 label {
 	font-size: 1.5rem;
 }
+
+th {
+	cursor: pointer;
+}
+
+[v-cloak] {
+	display: none;
+}
+.train-runs li {
+	cursor: pointer;
+}

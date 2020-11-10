@@ -9,10 +9,36 @@
     </head>
     <body>
         <div id="app">
-			<div class="container">
+			<div v-cloak class="container">
 				<h1 class="text-center">Train Data Manager</h1>
 				<div class="row">	
 					<div class="col-9">
+						<p v-if="runsPage.length == 0" class="my-4">No train data has been loaded</p>
+						<div v-if="runsPage.length !==0">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th v-on:click="sortBy('train_line')">Train Line</th>
+										<th v-on:click="sortBy('route_name')">Route Name</th>
+										<th v-on:click="sortBy('run_number')">Run Number</th>
+										<th v-on:click="sortBy('operator_id')">Operator ID</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="run in runsPage">
+										<td>{{run.train_line}}</td>
+										<td>{{run.route_name}}</td>
+										<td>{{run.run_number}}</td>
+										<td>{{run.operator_id}}</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="btn-group" role="group" aria-label="Basic example">
+								<button v-on:click="setPage(-1)" type="button" class="btn btn-secondary">-</button>
+								<button type="button" class="btn btn-secondary">{{currentPage}}</button>
+								<button v-on:click="setPage(1)" type="button" class="btn btn-secondary">+</button>
+							</div>
+						</div>
 					</div>
 					<div class="col-3">
 						<form v-on:submit.prevent="uploadFile">
@@ -20,6 +46,10 @@
 							<input type="file" class="form-control-file" id="file-upload-input">
 							<button class="btn btn-primary my-2" type="submit">Upload!</button>
 						</form>
+						<ul v-if="trainLists.length !== 0" class="train-runs">
+							<li v-for="list in trainLists" v-on:click="getRuns(list)">{{list.id}}</li>
+						</ul>
+						<p v-if="trainLists.length === 0" class="my-4">No train lists were found. Upload a CSV file to get started.</p>
 					</div>
 				</div>
 			</div>
