@@ -52,7 +52,6 @@ let vm = new Vue({
 			if ( this.currentPage < 1 ) {
 				this.currentPage = 1
 			}
-			console.log(this.runsPage.length)
 			if ( this.runsPage.length === 0 ) {
 				this.currentPage--
 			}
