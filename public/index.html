@@ -13,8 +13,8 @@
 				<h1 class="text-center">Train Data Manager</h1>
 				<div class="row">	
 					<div class="col-9">
-						<p v-if="runsPage.length == 0" class="my-4">No train data has been loaded</p>
-						<div v-if="runsPage.length !==0">
+						<p v-if="sortedRuns.length == 0" class="my-4">No train data has been loaded</p>
+						<div v-if="sortedRuns.length !==0">
 							<table class="table table-striped">
 								<thead>
 									<tr>
@@ -22,6 +22,7 @@
 										<th v-on:click="sortBy('route_name')">Route Name</th>
 										<th v-on:click="sortBy('run_number')">Run Number</th>
 										<th v-on:click="sortBy('operator_id')">Operator ID</th>
+										<th></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -30,6 +31,14 @@
 										<td>{{run.route_name}}</td>
 										<td>{{run.run_number}}</td>
 										<td>{{run.operator_id}}</td>
+										<td><div v-on:click="deleteRun(run)" class="delete-button">X</div></td>
+									</tr>
+									<tr>
+										<td><input v-model="newRun.train_line" placeholder="New Run Train Line"></td>
+										<td><input v-model="newRun.route_name" placeholder="New Run Route Name"></td>
+										<td><input v-model="newRun.run_number" placeholder="New Run Number"></td>
+										<td><input v-model="newRun.operator_id" placeholder="New Run Operator ID"></td>
+										<td><button v-on:click="createRun(newRun)" class="create-button btn btn-success ">+</button></td>
 									</tr>
 								</tbody>
 							</table>

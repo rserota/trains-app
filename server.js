@@ -8,6 +8,7 @@ let upload = multer()
 
 app.use(express.static('./public'))
 app.use(express.json())
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 app.get('/train-list', async (req, res)=>{
 	let trainLists = await pool.query(`
@@ -41,11 +42,30 @@ app.post('/train-list', upload.single('train-list'), async (req, res)=>{
 		let trainRunInsertion = await pool.query(`
 			INSERT INTO train_runs ( train_list_id, train_line, route_name, run_number, operator_id )
 			VALUES                 ( $1,            $2,         $3,         $4,         $5          )
-		`, [trainListId, run[0], run[1], run[2], run[3]]
+		`, [trainListId, run[0].trim(), run[1].trim(), run[2].trim(), run[3].trim()]
 		)
 	}
 
-	res.send({got:'em'})
+	res.send({success:true, trainListId})
+})
+
+app.post('/runs', async (req, res)=>{
+	console.log('body', req.body)
+	let trainRunInsertion = await pool.query(`
+			INSERT INTO train_runs ( train_list_id, train_line, route_name, run_number, operator_id )
+			VALUES                 ( $1,            $2,         $3,         $4,         $5          )
+		`, [req.body.train_list_id, req.body.train_line, req.body.route_name, req.body.run_number, req.body.operator_id]
+	)
+	res.send({success:true})
+})
+
+app.delete('/runs/:runId', async (req, res)=>{
+	let deleteQuery = await pool.query(`
+		DELETE FROM train_runs WHERE id = $1
+	`, [req.params.runId]
+	)
+	console.log('?', deleteQuery)
+	res.send({success:true})
 })
 
 app.listen(80)
