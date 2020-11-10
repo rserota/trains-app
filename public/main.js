@@ -52,6 +52,10 @@ let vm = new Vue({
 			if ( this.currentPage < 1 ) {
 				this.currentPage = 1
 			}
+			console.log(this.runsPage.length)
+			if ( this.runsPage.length === 0 ) {
+				this.currentPage--
+			}
 		},
 		sortBy: function(col){
 			// sort by a different column, or flip the sort order if the user clicks the current column again
