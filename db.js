@@ -28,7 +28,6 @@ pool.on('error', (err, client) => {
 			run_number varchar,
 			operator_id varchar,
 			CONSTRAINT fk_train_list_id FOREIGN KEY (train_list_id) REFERENCES train_lists (id)
-
 		)
 	`)
 })()
